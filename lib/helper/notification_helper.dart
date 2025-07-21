@@ -119,14 +119,14 @@ class NotificationHelper {
       String? image;
       NotificationBodyModel? notificationBody = convertNotification(message.data);
 
-      title = message.data['title'];
-      body = message.data['body'];
+      title = message.notification?.title ?? message.data['title'];
+      body = message.notification?.body ?? message.data['body'];
       image = (message.data['image'] != null && message.data['image'].isNotEmpty) ? message.data['image'].startsWith('http') ? message.data['image']
         : '${AppConstants.baseUrl}/storage/app/public/notification/${message.data['image']}' : null;
 
-      if(image != null && image.isNotEmpty) {
+      if(image?.trim().isNotEmpty == true) {
         try{
-          await showBigPictureNotificationHiddenLargeIcon(title, body, notificationBody, image, fln);
+          await showBigPictureNotificationHiddenLargeIcon(title, body, notificationBody, image!, fln);
         }catch(e) {
           await showBigTextNotification(title, body!, notificationBody, fln);
         }
